@@ -12,9 +12,11 @@
     "docs:clear": "rm -f GLOSSARY.html index.html search_index.json chapters/**/*.html",
     "docs:prepare": "npm run docs:clear && npm install && gitbook install",
     "docs:watch": "npm run docs:prepare && gitbook serve",
-    "docs:build": "gitbook build && cp -R _book/* . && rm -rf _book"
+    "docs:build": "gitbook build && cp -R _book/* . && rm -rf _book && git add ."
   },
-  "pre-commit": [ "docs:build" ],
+  "pre-commit": [
+    "docs:build"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/seagull-js/seagull-js.github.io.git"
