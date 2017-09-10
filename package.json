@@ -4,7 +4,8 @@
   "description": "website for the seagull framework",
   "main": "index.js",
   "dependencies": {
-    "gitbook-cli": "^2.3.2"
+    "gitbook-cli": "^2.3.2",
+    "pre-commit": "^1.2.2"
   },
   "devDependencies": {},
   "scripts": {
@@ -13,6 +14,7 @@
     "docs:watch": "npm run docs:prepare && gitbook serve",
     "docs:build": "gitbook build && cp -R _book/* . && rm -rf _book"
   },
+  "pre-commit": [ "docs:build" ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/seagull-js/seagull-js.github.io.git"
