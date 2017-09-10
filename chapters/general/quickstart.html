@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Contributing · GitBook</title>
+        <title>Quickstart · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -61,10 +61,10 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../core/folder-structure.html" />
+    <link rel="next" href="./" />
     
     
-    <link rel="prev" href="inspirations.html" />
+    <link rel="prev" href="../../" />
     
 
     </head>
@@ -113,7 +113,7 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="quickstart.html">
+        <li class="chapter active" data-level="2.1" data-path="quickstart.html">
             
                 <a href="quickstart.html">
             
@@ -236,7 +236,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.4" data-path="contributing.html">
+        <li class="chapter " data-level="2.4" data-path="contributing.html">
             
                 <a href="contributing.html">
             
@@ -332,7 +332,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >Contributing</a>
+        <a href="../.." >Quickstart</a>
     </h1>
 </div>
 
@@ -347,20 +347,73 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="website">Website</h1>
-<p>This is a website hosted on github pages, written in markdown files and
-compiled via gitbook.</p>
-<h2 id="getting-started">getting started</h2>
-<p>You&apos;ll need node.js (&gt;= 6) installed on your computer. You can then start the
-ocal preview server with <code>npm run docs:watch</code>. When you&apos;re done editing,
-compile the repository with <code>npm run docs:build</code> and commit all changes.</p>
-<h2 id="file-structure">file structure</h2>
-<ul>
-<li>README.md is the first page (&quot;index.html&quot;) and contains an introduction.</li>
-<li>SUMMARY.md contains the table of content, which is shown as a left slide menu.</li>
-</ul>
-<p>More details can be found in <a href="https://toolchain.gitbook.com" target="_blank">gitbook&apos;s</a> own
-documentation site, which itself is just a gitbook.</p>
+                                <h1 id="quickstart">Quickstart</h1>
+<p>This is a fast whirlwind tour for all you developers tipping their toes into
+modern web development. First things first, if you&apos;re reading this at night or
+other dark light conditions, click on the &quot;A&quot; icon on top of the page and tune
+the color theme to sepia or night. Docs being easy on the eyes helps to get
+into a more relaxed state.</p>
+<h2 id="installation">Installation</h2>
+<p>Seagull builts on top of JavaScript, so you need node.js installed. I&apos;ll assume
+that you are developing on Mac OS X and have homebrew installed:</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># node version manager, like rvm or rbenv for ruby</span>
+$ brew install nvm
+
+<span class="hljs-comment"># reload current shell with tweaked environment for nvm</span>
+$ <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;source <span class="hljs-variable">$(brew --prefix nvm)</span>/nvm.sh&quot;</span> &gt;&gt; ~/.profile
+
+<span class="hljs-comment"># latest LTS version which AWS Lambda supports (import for later deployments)</span>
+$ nvm install 6.10.3
+
+<span class="hljs-comment"># always use this node.js version as default in new shells</span>
+$ nvm <span class="hljs-built_in">alias</span> default 6.10.3
+</code></pre>
+<p>For other cases, download node.js with your package manager of choice or head
+over to <a href="https://nodejs.org/en/download/" target="_blank">node.js official downloads page</a> and
+get the latest LTS version 6.X.</p>
+<p>Once you have node.js on your machine, installing seagull is as easy as
+installing any global <a href="../../GLOSSARY.html#npm" class="glossary-term" title="Node Package Manager. This is the name of the official CLI tool shipped along
+with node.js for managing dependencies, as well as the name of the official
+package registry.">NPM</a> package:</p>
+<pre><code class="lang-bash">$ npm install -g @seagull-js/seagull-cli
+</code></pre>
+<p>This CLI tool is now available on your machine as <code>seagull</code> and contains all
+tooling you&apos;ll need for developing seagull apps.</p>
+<h2 id="optional-vscode">Optional: VSCode</h2>
+<p>Of course you&apos;re totally free to choose any code editor or <a href="../../GLOSSARY.html#ide" class="glossary-term" title="Integrated Development Environment.">IDE</a> for coding on
+seagull projects, the recommended code editor is Visual Studio Code (<a href="../../GLOSSARY.html#vscode" class="glossary-term" title="Visual Studio Code. The probably most popular code editor for web developers
+specialised in JavaScript. Made by the same company that also created Typescript
+(Microsoft), so there might be some synergies.">VSCode</a>).
+It has strong support for typescript and tsx out of the box, plus ships with
+a native git integration and looks good by default.</p>
+<h2 id="scaffolding">Scaffolding</h2>
+<p>This may come as a shocking surprise for you, but we will create a simple ToDo-
+App. By keeping the problem domain super simple, there is more room to highlight
+some technological details and still get something up and running in a few
+minutes. Having the elephant in the room out of the way, let&apos;s go:</p>
+<pre><code class="lang-bash"><span class="hljs-comment"># you probably have s special place on your disk for coding stuff, right?</span>
+$ <span class="hljs-built_in">cd</span> path/to/your/projects/folder
+
+<span class="hljs-comment"># scaffold a new app from scratch</span>
+$ seagull new todos
+
+<span class="hljs-comment"># change into the directory of the new app, optionally fire up VSCode</span>
+$ <span class="hljs-built_in">cd</span> todos &amp;&amp; code .
+</code></pre>
+<p>All basic files and configurations are generated your you, as well as app
+dependencies resolved (they reside in <code>node_modules/</code>). If you inspect the
+central <code>package.json</code> file, you&apos;ll see only a light dependency on the Seagull
+core. The heavy lifting of toolchains is outsourced into the CLI tool you just
+installed above, which means <em>your actual app is featherlight</em>. Okay, let&apos;s see
+that everything worked out correctly:</p>
+<pre><code class="lang-bash">$ seagull dev
+</code></pre>
+<p>This starts a local development server on
+<a href="http://localhost:3000/" target="_blank">localhost:3000/</a>. If you navigate your browser there,
+you <em>should</em> see a classical &quot;hello world&quot; message. You can stop this dev server
+any time with the key kombination <code>Ctrl</code> + <code>C</code>.</p>
+<h2 id="frontend-components">Frontend-Components</h2>
+<p>ToDo: intro about TSX components, build a few of them, ... .</p>
 
                                 
                                 </section>
@@ -388,12 +441,12 @@ documentation site, which itself is just a gitbook.</p>
 
             
                 
-                <a href="inspirations.html" class="navigation navigation-prev " aria-label="Previous page: Inspirations">
+                <a href="../../" class="navigation navigation-prev " aria-label="Previous page: The Seagull Framework">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="../core/folder-structure.html" class="navigation navigation-next " aria-label="Next page: Folder Structure">
+                <a href="./" class="navigation navigation-next " aria-label="Next page: Introduction">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -404,7 +457,7 @@ documentation site, which itself is just a gitbook.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Contributing","level":"2.4","depth":1,"next":{"title":"Folder Structure","level":"3.1","depth":1,"path":"chapters/core/folder-structure.md","ref":"chapters/core/folder-structure.md","articles":[]},"previous":{"title":"Inspirations","level":"2.3","depth":1,"path":"chapters/general/inspirations.md","ref":"chapters/general/inspirations.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/general/contributing.md","mtime":"2017-09-10T18:48:44.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-10T20:43:35.302Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Quickstart","level":"2.1","depth":1,"next":{"title":"Introduction","level":"2.2","depth":1,"path":"chapters/general/index.md","ref":"chapters/general/index.md","articles":[{"title":"Featherweight","level":"2.2.1","depth":2,"path":"chapters/general/characteristics/featherweight.md","ref":"chapters/general/characteristics/featherweight.md","articles":[]},{"title":"Zero-Config","level":"2.2.2","depth":2,"path":"chapters/general/characteristics/zero-config.md","ref":"chapters/general/characteristics/zero-config.md","articles":[]},{"title":"Typesafe","level":"2.2.3","depth":2,"path":"chapters/general/characteristics/typesafe.md","ref":"chapters/general/characteristics/typesafe.md","articles":[]},{"title":"Isomorphic","level":"2.2.4","depth":2,"path":"chapters/general/characteristics/isomorphic.md","ref":"chapters/general/characteristics/isomorphic.md","articles":[]},{"title":"Cloud","level":"2.2.5","depth":2,"path":"chapters/general/characteristics/cloud.md","ref":"chapters/general/characteristics/cloud.md","articles":[]},{"title":"Framework","level":"2.2.6","depth":2,"path":"chapters/general/characteristics/framework.md","ref":"chapters/general/characteristics/framework.md","articles":[]}]},"previous":{"title":"The Seagull Framework","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/general/quickstart.md","mtime":"2017-09-10T20:38:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-10T20:43:35.302Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
