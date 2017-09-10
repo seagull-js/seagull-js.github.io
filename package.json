@@ -1,0 +1,25 @@
+{
+  "name": "seagull-js.github.io",
+  "version": "0.1.0",
+  "description": "website for the seagull framework",
+  "main": "index.js",
+  "dependencies": {
+    "gitbook-cli": "^2.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "docs:prepare": "npm install && gitbook install",
+    "docs:watch": "npm run docs:prepare && gitbook serve",
+    "docs:build": "gitbook build && cp -R _book/* . && rm -rf _book"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seagull-js/seagull-js.github.io.git"
+  },
+  "author": "Maximilian Stroh <hisako1337@gmail.com>",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/seagull-js/seagull-js.github.io/issues"
+  },
+  "homepage": "https://github.com/seagull-js/seagull-js.github.io#readme"
+}
