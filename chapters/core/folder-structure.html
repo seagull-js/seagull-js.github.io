@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Introduction · GitBook</title>
+        <title>Folder Structure · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -61,8 +61,10 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="backend.html" />
     
-    <link rel="prev" href="../core/backend.html" />
+    
+    <link rel="prev" href="../general/contributing.html" />
     
 
     </head>
@@ -241,9 +243,9 @@
         
         
     
-        <li class="chapter " data-level="3.1" data-path="../core/folder-structure.html">
+        <li class="chapter active" data-level="3.1" data-path="folder-structure.html">
             
-                <a href="../core/folder-structure.html">
+                <a href="folder-structure.html">
             
                     
                     Folder Structure
@@ -254,9 +256,9 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2" data-path="../core/backend.html">
+        <li class="chapter " data-level="3.2" data-path="backend.html">
             
-                <a href="../core/backend.html">
+                <a href="backend.html">
             
                     
                     Backend
@@ -274,9 +276,9 @@
         
         
     
-        <li class="chapter active" data-level="4.1" data-path="./">
+        <li class="chapter " data-level="4.1" data-path="../cli/">
             
-                <a href="./">
+                <a href="../cli/">
             
                     
                     Introduction
@@ -317,7 +319,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >Introduction</a>
+        <a href="../.." >Folder Structure</a>
     </h1>
 </div>
 
@@ -332,7 +334,93 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="cli">CLI</h1>
+                                <h1 id="folder-structure">Folder Structure</h1>
+<p>Since Seagull follows a <a href="../../seagull/concepts/zero_config">Zero-Config concept</a>,
+there are a few rules on where to put stuff for your project. This is how an
+empty scaffolded project looks like, with explanations:</p>
+<ul>
+<li><p><strong>/api/</strong></p>
+<p>This folder contains everything you would label &quot;backend&quot;. There is no server,
+but all you need are functions that will get triggered through http requests.</p>
+<ul>
+<li><p><strong>Frontend.ts</strong></p>
+<p>This is an example API handler but also <em>essential</em> for the frontend to work.
+It will receive incoming requests that are not matched from other API paths
+or static assets, delegate it to the frontend router and render it &quot;on the
+server&quot;.
+<a href="https://github.com/seagull-js/seagull-cli/blob/master/templates/app/api/Frontend.ts" target="_blank">example file</a></p>
+</li>
+</ul>
+</li>
+<li><p><strong>/frontend/</strong></p>
+<p>The whole frontend resides in this folder. Seagull does ship with an embedded
+<a href="https://infernojs.org" target="_blank">Inferno.js</a> view library and useful addons,
+preconfigured. Files in the folder have the extension <em>.tsx</em> and are regular
+typescript files, but can deal with html tags natively (like <a href="https://facebook.github.io/react/docs/introducing-jsx.html" target="_blank">JSX</a>).</p>
+<ul>
+<li><p><strong>/pages/</strong></p>
+<p>Place all your website pages / views here. They&apos;re just components, but by
+convention they should represent something which has a distinct URL and is
+not reused within the app. Add pages to the <code>routes.tsx</code> file to make them
+accessible.</p>
+</li>
+<li><p><strong>/widgets/</strong></p>
+<p>This is where reusable components should be placed. &quot;Widgets&quot; are meant to
+be used within pages or other widgets. Inferno is configured with
+<em>react-compat</em> mode, so every library targeting react should work with
+Inferno, too.</p>
+</li>
+<li><p><strong>client.tsx</strong></p>
+<p>This file is the entry point for clients (like, browsers) which execute the
+final app bundle. You should leave it there as-is, since any kind of
+configuration should happen in the <code>routes.tsx</code> file anyways.
+<a href="https://github.com/seagull-js/seagull-cli/blob/master/templates/app/frontend/client.tsx" target="_blank">example file</a></p>
+</li>
+<li><p><strong>layout.tsx</strong></p>
+<p>The classical &quot;index.html&quot; file, implemented as a tsx component, because why
+not. The layout gets compiled during SSR executions from the <code>Frontend.ts</code>
+API handler above.
+<a href="https://github.com/seagull-js/seagull-cli/blob/master/templates/app/frontend/layout.tsx" target="_blank">example file</a></p>
+</li>
+<li><p><strong>routes.tsx</strong></p>
+<p>All frontend plumbing happens in this file, it leverages <code>inferno-router</code> to
+map (and nest) http paths to components. <em>(ToDo: add MobX stores here)</em>
+<a href="https://github.com/seagull-js/seagull-cli/blob/master/templates/app/frontend/routes.tsx" target="_blank">example file</a></p>
+</li>
+</ul>
+</li>
+<li><p><strong><del>/assets/</del></strong></p>
+<p>(ToDo: copy assets folder during build step, load it directly for serve step)</p>
+</li>
+<li><p><strong>package.json</strong></p>
+<p>The central point for any project-wide configurations. Node.js projects
+already use this file for dependency management and node.js settings, but
+Seagull embraces the file even more. Currently, the <code>&quot;name&quot;</code> field is used
+as the app name directly, but more settings are in the works. There is no need
+for just another json/yml file in the project for seagull apps, like many
+other frameworks do.
+<a href="https://github.com/seagull-js/seagull-cli/blob/master/templates/app/package.json" target="_blank">example file</a></p>
+</li>
+<li><p><strong>README.md</strong></p>
+<p>This is a place for your project notes. Write down todo&apos;s, descriptions, ideas
+or whatever you feel like. All code projects should have this file, even if it
+is just to have a place for instant scribbling.</p>
+</li>
+<li><p><strong>tsconfig.json</strong></p>
+<p>The configuration for the typescript compiler, it describes the rules how your
+app should be built and so on. You should never change it unless you know
+exactly what you&apos;re doing.
+<a href="https://github.com/seagull-js/seagull-cli/blob/master/templates/app/tsconfig.json" target="_blank">example file</a></p>
+</li>
+<li><p><strong>tslint.json</strong></p>
+<p>The living code style guide of JS/TS land. You can define precisely how your
+source code should be written here. In addition to this, there is also
+<a href="https://prettier.io" target="_blank">prettier</a> applied when building your app, so some basic
+rules like 80 character line limits, trailing commas and single-quotes are
+strictly enforced.
+<a href="https://github.com/seagull-js/seagull-cli/blob/master/templates/app/tslint.json" target="_blank">example file</a></p>
+</li>
+</ul>
 
                                 
                                 </section>
@@ -360,10 +448,14 @@
 
             
                 
-                <a href="../core/backend.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Backend">
+                <a href="../general/contributing.html" class="navigation navigation-prev " aria-label="Previous page: Contributing">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="backend.html" class="navigation navigation-next " aria-label="Next page: Backend">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -372,7 +464,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"4.1","depth":1,"previous":{"title":"Backend","level":"3.2","depth":1,"path":"chapters/core/backend.md","ref":"chapters/core/backend.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/cli/index.md","mtime":"2017-09-10T14:43:46.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-10T18:49:18.804Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Folder Structure","level":"3.1","depth":1,"next":{"title":"Backend","level":"3.2","depth":1,"path":"chapters/core/backend.md","ref":"chapters/core/backend.md","articles":[]},"previous":{"title":"Contributing","level":"2.3","depth":1,"path":"chapters/general/contributing.md","ref":"chapters/general/contributing.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/core/folder-structure.md","mtime":"2017-09-10T18:16:10.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-10T18:49:18.804Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Introduction · GitBook</title>
+        <title>Inspirations · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -61,8 +61,10 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="contributing.html" />
     
-    <link rel="prev" href="../core/backend.html" />
+    
+    <link rel="prev" href="characteristics/framework.html" />
     
 
     </head>
@@ -111,9 +113,9 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="../general/">
+        <li class="chapter " data-level="2.1" data-path="./">
             
-                <a href="../general/">
+                <a href="./">
             
                     
                     Introduction
@@ -125,9 +127,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.1.1" data-path="../general/characteristics/featherweight.html">
+        <li class="chapter " data-level="2.1.1" data-path="characteristics/featherweight.html">
             
-                <a href="../general/characteristics/featherweight.html">
+                <a href="characteristics/featherweight.html">
             
                     
                     Featherweight
@@ -138,9 +140,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.2" data-path="../general/characteristics/zero-config.html">
+        <li class="chapter " data-level="2.1.2" data-path="characteristics/zero-config.html">
             
-                <a href="../general/characteristics/zero-config.html">
+                <a href="characteristics/zero-config.html">
             
                     
                     Zero-Config
@@ -151,9 +153,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.3" data-path="../general/characteristics/typesafe.html">
+        <li class="chapter " data-level="2.1.3" data-path="characteristics/typesafe.html">
             
-                <a href="../general/characteristics/typesafe.html">
+                <a href="characteristics/typesafe.html">
             
                     
                     Typesafe
@@ -164,9 +166,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.4" data-path="../general/characteristics/isomorphic.html">
+        <li class="chapter " data-level="2.1.4" data-path="characteristics/isomorphic.html">
             
-                <a href="../general/characteristics/isomorphic.html">
+                <a href="characteristics/isomorphic.html">
             
                     
                     Isomorphic
@@ -177,9 +179,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.5" data-path="../general/characteristics/cloud.html">
+        <li class="chapter " data-level="2.1.5" data-path="characteristics/cloud.html">
             
-                <a href="../general/characteristics/cloud.html">
+                <a href="characteristics/cloud.html">
             
                     
                     Cloud
@@ -190,9 +192,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.6" data-path="../general/characteristics/framework.html">
+        <li class="chapter " data-level="2.1.6" data-path="characteristics/framework.html">
             
-                <a href="../general/characteristics/framework.html">
+                <a href="characteristics/framework.html">
             
                     
                     Framework
@@ -208,9 +210,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.2" data-path="../general/inspirations.html">
+        <li class="chapter active" data-level="2.2" data-path="inspirations.html">
             
-                <a href="../general/inspirations.html">
+                <a href="inspirations.html">
             
                     
                     Inspirations
@@ -221,9 +223,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="../general/contributing.html">
+        <li class="chapter " data-level="2.3" data-path="contributing.html">
             
-                <a href="../general/contributing.html">
+                <a href="contributing.html">
             
                     
                     Contributing
@@ -274,9 +276,9 @@
         
         
     
-        <li class="chapter active" data-level="4.1" data-path="./">
+        <li class="chapter " data-level="4.1" data-path="../cli/">
             
-                <a href="./">
+                <a href="../cli/">
             
                     
                     Introduction
@@ -317,7 +319,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >Introduction</a>
+        <a href="../.." >Inspirations</a>
     </h1>
 </div>
 
@@ -332,7 +334,49 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="cli">CLI</h1>
+                                <h1 id="inspirations-best-of-many-worlds">Inspirations: Best of many Worlds</h1>
+<p>From the vast and rich choice of technologies out there, many good things are
+cherrypicked into this framework. The learnings from the past decades of web
+development are distilled into this framework, which itself stands on the
+shoulders of giants. The major inspiration sources are:</p>
+<ul>
+<li><p><strong>Javascript</strong>: the most popular programming language in the web development
+space. Everyone knows it more or less and you get access to the biggest
+collection of libraries of any language out there: NPM. Since JS runs on both,
+clients and servers (also called &quot;isomorphic&quot; or &quot;universal&quot;), this is the
+only language you need.</p>
+</li>
+<li><p><strong>Ruby on Rails</strong>: The very core paradigm that made Rails become the striking
+success was <em>Convention over Configuration</em>. Ultra-flexible configurations
+were (and a decade later: are again) exhausting productivity killers and
+responsible for very high cognitive load for developers. <a href="../../GLOSSARY.html#coc" class="glossary-term" title="Convention over Configuration.">CoC</a> solves this
+elegantly by dictating a few rules how stuff must be organized and freeing
+up developers to have more time for actual development. <a href="../../GLOSSARY.html#coc" class="glossary-term" title="Convention over Configuration.">CoC</a> happily trades
+in some flexibility for big gains in productivity.</p>
+</li>
+<li><p><strong>Go</strong>: The most important factor that drives Go&apos;s success is probably the
+tooling around the language. It may sound irrelevant but developers often
+spend much time every day to just format their code with tiny interactions,
+like comma placements or indentations (tabs vs spaces, ...). Go just stops
+all of this with <em>gofmt</em>. Seagull has it&apos;s own powerful <em>fmt</em> command, too.</p>
+</li>
+<li><p><strong>Serverless</strong>: From servers to docker containers, to compose, to swarm and
+kubernetes, the complexity of &quot;just keep my app running&quot; has increased
+dramatically over the last years. The serverless architecture directly
+eliminates the very idea of servers, erasing the many thought chains of
+orchestration and scalability issues. Developers can again focus more on
+actually developing stuff instead of doing DevOps works all day long.</p>
+</li>
+<li><p><strong>PHP</strong>: Yes, PHP. The one thing that made PHP appear so great for new
+developers back in the day was actually just one major thing: the deployment
+story. Get a &quot;web host&quot; for 2$ per month, FTP your &quot;program&quot; onto a server
+folder, open your web app in your browser. Ultra short feedback loop and
+instant gratification, nearly no costs. Exactly what new developers need to
+feel great right away and stick to something. Seagull leverages the FaaS
+paradigm on serverless, leading to <em>even simpler and cheaper deployments</em> than
+during the old PHP days.</p>
+</li>
+</ul>
 
                                 
                                 </section>
@@ -360,10 +404,14 @@
 
             
                 
-                <a href="../core/backend.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Backend">
+                <a href="characteristics/framework.html" class="navigation navigation-prev " aria-label="Previous page: Framework">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="contributing.html" class="navigation navigation-next " aria-label="Next page: Contributing">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -372,7 +420,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"4.1","depth":1,"previous":{"title":"Backend","level":"3.2","depth":1,"path":"chapters/core/backend.md","ref":"chapters/core/backend.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/cli/index.md","mtime":"2017-09-10T14:43:46.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-10T18:49:18.804Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Inspirations","level":"2.2","depth":1,"next":{"title":"Contributing","level":"2.3","depth":1,"path":"chapters/general/contributing.md","ref":"chapters/general/contributing.md","articles":[]},"previous":{"title":"Framework","level":"2.1.6","depth":2,"path":"chapters/general/characteristics/framework.md","ref":"chapters/general/characteristics/framework.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/general/inspirations.md","mtime":"2017-09-10T17:49:27.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-10T18:49:18.804Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

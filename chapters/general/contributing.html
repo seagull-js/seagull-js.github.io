@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Introduction · GitBook</title>
+        <title>Contributing · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -61,8 +61,10 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="../core/folder-structure.html" />
     
-    <link rel="prev" href="../core/backend.html" />
+    
+    <link rel="prev" href="inspirations.html" />
     
 
     </head>
@@ -111,9 +113,9 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="../general/">
+        <li class="chapter " data-level="2.1" data-path="./">
             
-                <a href="../general/">
+                <a href="./">
             
                     
                     Introduction
@@ -125,9 +127,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.1.1" data-path="../general/characteristics/featherweight.html">
+        <li class="chapter " data-level="2.1.1" data-path="characteristics/featherweight.html">
             
-                <a href="../general/characteristics/featherweight.html">
+                <a href="characteristics/featherweight.html">
             
                     
                     Featherweight
@@ -138,9 +140,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.2" data-path="../general/characteristics/zero-config.html">
+        <li class="chapter " data-level="2.1.2" data-path="characteristics/zero-config.html">
             
-                <a href="../general/characteristics/zero-config.html">
+                <a href="characteristics/zero-config.html">
             
                     
                     Zero-Config
@@ -151,9 +153,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.3" data-path="../general/characteristics/typesafe.html">
+        <li class="chapter " data-level="2.1.3" data-path="characteristics/typesafe.html">
             
-                <a href="../general/characteristics/typesafe.html">
+                <a href="characteristics/typesafe.html">
             
                     
                     Typesafe
@@ -164,9 +166,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.4" data-path="../general/characteristics/isomorphic.html">
+        <li class="chapter " data-level="2.1.4" data-path="characteristics/isomorphic.html">
             
-                <a href="../general/characteristics/isomorphic.html">
+                <a href="characteristics/isomorphic.html">
             
                     
                     Isomorphic
@@ -177,9 +179,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.5" data-path="../general/characteristics/cloud.html">
+        <li class="chapter " data-level="2.1.5" data-path="characteristics/cloud.html">
             
-                <a href="../general/characteristics/cloud.html">
+                <a href="characteristics/cloud.html">
             
                     
                     Cloud
@@ -190,9 +192,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.6" data-path="../general/characteristics/framework.html">
+        <li class="chapter " data-level="2.1.6" data-path="characteristics/framework.html">
             
-                <a href="../general/characteristics/framework.html">
+                <a href="characteristics/framework.html">
             
                     
                     Framework
@@ -208,9 +210,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.2" data-path="../general/inspirations.html">
+        <li class="chapter " data-level="2.2" data-path="inspirations.html">
             
-                <a href="../general/inspirations.html">
+                <a href="inspirations.html">
             
                     
                     Inspirations
@@ -221,9 +223,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="../general/contributing.html">
+        <li class="chapter active" data-level="2.3" data-path="contributing.html">
             
-                <a href="../general/contributing.html">
+                <a href="contributing.html">
             
                     
                     Contributing
@@ -274,9 +276,9 @@
         
         
     
-        <li class="chapter active" data-level="4.1" data-path="./">
+        <li class="chapter " data-level="4.1" data-path="../cli/">
             
-                <a href="./">
+                <a href="../cli/">
             
                     
                     Introduction
@@ -317,7 +319,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >Introduction</a>
+        <a href="../.." >Contributing</a>
     </h1>
 </div>
 
@@ -332,7 +334,20 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="cli">CLI</h1>
+                                <h1 id="website">Website</h1>
+<p>This is a website hosted on github pages, written in markdown files and
+compiled via gitbook.</p>
+<h2 id="getting-started">getting started</h2>
+<p>You&apos;ll need node.js (&gt;= 6) installed on your computer. You can then start the
+ocal preview server with <code>npm run docs:watch</code>. When you&apos;re done editing,
+compile the repository with <code>npm run docs:build</code> and commit all changes.</p>
+<h2 id="file-structure">file structure</h2>
+<ul>
+<li>README.md is the first page (&quot;index.html&quot;) and contains an introduction.</li>
+<li>SUMMARY.md contains the table of content, which is shown as a left slide menu.</li>
+</ul>
+<p>More details can be found in <a href="https://toolchain.gitbook.com" target="_blank">gitbook&apos;s</a> own
+documentation site, which itself is just a gitbook.</p>
 
                                 
                                 </section>
@@ -360,10 +375,14 @@
 
             
                 
-                <a href="../core/backend.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Backend">
+                <a href="inspirations.html" class="navigation navigation-prev " aria-label="Previous page: Inspirations">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="../core/folder-structure.html" class="navigation navigation-next " aria-label="Next page: Folder Structure">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -372,7 +391,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"4.1","depth":1,"previous":{"title":"Backend","level":"3.2","depth":1,"path":"chapters/core/backend.md","ref":"chapters/core/backend.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/cli/index.md","mtime":"2017-09-10T14:43:46.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-10T18:49:18.804Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Contributing","level":"2.3","depth":1,"next":{"title":"Folder Structure","level":"3.1","depth":1,"path":"chapters/core/folder-structure.md","ref":"chapters/core/folder-structure.md","articles":[]},"previous":{"title":"Inspirations","level":"2.2","depth":1,"path":"chapters/general/inspirations.md","ref":"chapters/general/inspirations.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/general/contributing.md","mtime":"2017-09-10T18:48:44.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-10T18:49:18.804Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

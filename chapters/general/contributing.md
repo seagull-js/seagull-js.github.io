@@ -1,4 +1,4 @@
-# Updating this website
+# Website
 
 This is a website hosted on github pages, written in markdown files and
 compiled via gitbook.
@@ -11,5 +11,8 @@ compile the repository with `npm run docs:build` and commit all changes.
 
 ## file structure
 
-- README.md is the first page and contains an introduction.
+- README.md is the first page ("index.html") and contains an introduction.
 - SUMMARY.md contains the table of content, which is shown as a left slide menu.
+
+More details can be found in [gitbook's](https://toolchain.gitbook.com) own
+documentation site, which itself is just a gitbook.

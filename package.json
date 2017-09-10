@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "gitbook-cli": "^2.3.2",
+    "gitbook-plugin-collapsible-chapters": "^0.1.8",
     "pre-commit": "^1.2.2"
   },
   "devDependencies": {},
