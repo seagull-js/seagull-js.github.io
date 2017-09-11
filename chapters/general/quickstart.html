@@ -414,6 +414,79 @@ you <em>should</em> see a classical &quot;hello world&quot; message. You can sto
 any time with the key kombination <code>Ctrl</code> + <code>C</code>.</p>
 <h2 id="frontend-components">Frontend-Components</h2>
 <p>ToDo: intro about TSX components, build a few of them, ... .</p>
+<pre><code class="lang-typescript">// external library imports
+import Component from &apos;inferno-component&apos;;
+import createElement from &apos;inferno-create-element&apos;;
+
+// better statically type the central data structure :-)
+export interface ITodo {
+  text: string
+  checked: boolean
+}
+
+// internal &apos;state&apos; data structure of this component
+export interface IState {
+  list: ITodo[]
+  input: string
+}
+
+// the (stateful) component for the page with type checking
+export default class TodosPage extends Component&lt;{}, IState&gt; {
+  constructor(props) {
+    super(props);
+    this.state = {
+      list: [],
+      input: &apos;&apos;
+    }
+  }
+
+  setInputText = (event) =&gt; this.setState({ input: event.target.value })
+
+  addTodo = (event) =&gt; {
+    const newTodo = { checked: false, text: this.state.input }
+    this.setState({ input: &apos;&apos;, list: this.state.list.concat(newTodo) })
+  }
+
+  deleteTodo = (index: number) =&gt; {
+    const list = this.state.list
+    list.splice(index, 1)
+    this.setState({ list })
+  }
+
+  toggleChecked = (index: number) =&gt; {
+    const list = this.state.list
+    list[index].checked = !list[index].checked
+    this.setState({ list })
+  }
+
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;table&gt;
+          &lt;tbody&gt;
+            {this.state.list.map((todo, index) =&gt;
+              &lt;tr&gt;
+                &lt;td&gt;&lt;input type=&quot;checkbox&quot; checked={ todo.checked } onClick={ e =&gt; this.toggleChecked(index) } /&gt;&lt;/td&gt;
+                &lt;td&gt;{ todo.checked ? (
+                  &lt;strike&gt;{ todo.text }&lt;/strike&gt;
+                ) : (
+                  &lt;span&gt;{ todo.text }&lt;/span&gt;
+                )}&lt;/td&gt;
+                &lt;td&gt;&lt;button onClick={ e =&gt; this.deleteTodo(index)}&gt;delete&lt;/button&gt;&lt;/td&gt;
+              &lt;/tr&gt;
+            )}
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+
+        &lt;div&gt;
+          &lt;input type=&quot;text&quot; value={ this.state.input } onChange={ this.setInputText } placeholder=&quot;enter some text&quot; /&gt;
+          &lt;button onClick={ this.addTodo }&gt;add todo&lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    )
+  }
+}
+</code></pre>
 
                                 
                                 </section>
@@ -457,7 +530,7 @@ any time with the key kombination <code>Ctrl</code> + <code>C</code>.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Quickstart","level":"2.1","depth":1,"next":{"title":"Introduction","level":"2.2","depth":1,"path":"chapters/general/index.md","ref":"chapters/general/index.md","articles":[{"title":"Featherweight","level":"2.2.1","depth":2,"path":"chapters/general/characteristics/featherweight.md","ref":"chapters/general/characteristics/featherweight.md","articles":[]},{"title":"Zero-Config","level":"2.2.2","depth":2,"path":"chapters/general/characteristics/zero-config.md","ref":"chapters/general/characteristics/zero-config.md","articles":[]},{"title":"Typesafe","level":"2.2.3","depth":2,"path":"chapters/general/characteristics/typesafe.md","ref":"chapters/general/characteristics/typesafe.md","articles":[]},{"title":"Isomorphic","level":"2.2.4","depth":2,"path":"chapters/general/characteristics/isomorphic.md","ref":"chapters/general/characteristics/isomorphic.md","articles":[]},{"title":"Cloud","level":"2.2.5","depth":2,"path":"chapters/general/characteristics/cloud.md","ref":"chapters/general/characteristics/cloud.md","articles":[]},{"title":"Framework","level":"2.2.6","depth":2,"path":"chapters/general/characteristics/framework.md","ref":"chapters/general/characteristics/framework.md","articles":[]}]},"previous":{"title":"The Seagull Framework","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/general/quickstart.md","mtime":"2017-09-10T20:38:45.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-10T20:43:35.302Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Quickstart","level":"2.1","depth":1,"next":{"title":"Introduction","level":"2.2","depth":1,"path":"chapters/general/index.md","ref":"chapters/general/index.md","articles":[{"title":"Featherweight","level":"2.2.1","depth":2,"path":"chapters/general/characteristics/featherweight.md","ref":"chapters/general/characteristics/featherweight.md","articles":[]},{"title":"Zero-Config","level":"2.2.2","depth":2,"path":"chapters/general/characteristics/zero-config.md","ref":"chapters/general/characteristics/zero-config.md","articles":[]},{"title":"Typesafe","level":"2.2.3","depth":2,"path":"chapters/general/characteristics/typesafe.md","ref":"chapters/general/characteristics/typesafe.md","articles":[]},{"title":"Isomorphic","level":"2.2.4","depth":2,"path":"chapters/general/characteristics/isomorphic.md","ref":"chapters/general/characteristics/isomorphic.md","articles":[]},{"title":"Cloud","level":"2.2.5","depth":2,"path":"chapters/general/characteristics/cloud.md","ref":"chapters/general/characteristics/cloud.md","articles":[]},{"title":"Framework","level":"2.2.6","depth":2,"path":"chapters/general/characteristics/framework.md","ref":"chapters/general/characteristics/framework.md","articles":[]}]},"previous":{"title":"The Seagull Framework","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/general/quickstart.md","mtime":"2017-09-11T07:06:38.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-11T07:07:09.074Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

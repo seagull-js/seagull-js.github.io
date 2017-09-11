@@ -83,3 +83,78 @@ any time with the key kombination `Ctrl` + `C`.
 ## Frontend-Components
 
 ToDo: intro about TSX components, build a few of them, ... .
+
+````typescript
+// external library imports
+import Component from 'inferno-component';
+import createElement from 'inferno-create-element';
+
+// better statically type the central data structure :-)
+export interface ITodo {
+  text: string
+  checked: boolean
+}
+
+// internal 'state' data structure of this component
+export interface IState {
+  list: ITodo[]
+  input: string
+}
+
+// the (stateful) component for the page with type checking
+export default class TodosPage extends Component<{}, IState> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      list: [],
+      input: ''
+    }
+  }
+
+  setInputText = (event) => this.setState({ input: event.target.value })
+
+  addTodo = (event) => {
+    const newTodo = { checked: false, text: this.state.input }
+    this.setState({ input: '', list: this.state.list.concat(newTodo) })
+  }
+
+  deleteTodo = (index: number) => {
+    const list = this.state.list
+    list.splice(index, 1)
+    this.setState({ list })
+  }
+
+  toggleChecked = (index: number) => {
+    const list = this.state.list
+    list[index].checked = !list[index].checked
+    this.setState({ list })
+  }
+
+  render() {
+    return (
+      <div>
+        <table>
+          <tbody>
+            {this.state.list.map((todo, index) =>
+              <tr>
+                <td><input type="checkbox" checked={ todo.checked } onClick={ e => this.toggleChecked(index) } /></td>
+                <td>{ todo.checked ? (
+                  <strike>{ todo.text }</strike>
+                ) : (
+                  <span>{ todo.text }</span>
+                )}</td>
+                <td><button onClick={ e => this.deleteTodo(index)}>delete</button></td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+
+        <div>
+          <input type="text" value={ this.state.input } onChange={ this.setInputText } placeholder="enter some text" />
+          <button onClick={ this.addTodo }>add todo</button>
+        </div>
+      </div>
+    )
+  }
+}
+````
