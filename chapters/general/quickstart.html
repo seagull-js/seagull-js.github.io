@@ -412,81 +412,324 @@ that everything worked out correctly:</p>
 <a href="http://localhost:3000/" target="_blank">localhost:3000/</a>. If you navigate your browser there,
 you <em>should</em> see a classical &quot;hello world&quot; message. You can stop this dev server
 any time with the key kombination <code>Ctrl</code> + <code>C</code>.</p>
-<h2 id="frontend-components">Frontend-Components</h2>
-<p>ToDo: intro about TSX components, build a few of them, ... .</p>
-<pre><code class="lang-typescript">// external library imports
-import Component from &apos;inferno-component&apos;;
-import createElement from &apos;inferno-create-element&apos;;
+<h2 id="frontend-layout">Frontend-Layout</h2>
+<p>Now let&apos;s build some frontend stuff. You should have some basic knowledge about
+what a SPA is, how react works and JSX files look like and have an idea about
+the latest ECMAScript/Typescript goodies.</p>
+<p>First things first, we update the generated <code>frontend/layout.tsx</code> file to look
+like this:</p>
+<pre><code class="lang-jsx"><span class="hljs-keyword">import</span> createElement <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-create-element&apos;</span>
 
-// better statically type the central data structure :-)
-export interface ITodo {
-  text: string
-  checked: boolean
+<span class="hljs-comment">// this is what your index.html looks like</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Layout</span>(<span class="hljs-params">{ children }</span>) </span>{
+  <span class="hljs-keyword">return</span> (
+    <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Seagull ToDo App<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css&quot;</span> /&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Seagull ToDo App<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&apos;root&apos;</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;&quot;</span>&gt;</span>{children}<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;/assets/bundle.js&quot;</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+  );
+}
+</span></code></pre>
+<p>This is the equivalent of &quot;index.html&quot; files in other frameworks. We added
+Bootstrap3 to it for some basic styles and responsiveness. Note that in TSX,
+every tag must be closed properly (even the <code>link</code> in the <code>head</code> section) and
+the <code>class</code> attribute of HTML is called <code>className</code>. Since TSX is just
+Javascript in the end, the word &quot;class&quot; has a special meaning in JS already, so
+this got mapped. If you reload the page in your browser, you should notice the
+changes (you still have <code>seagull dev</code> running, have you?).</p>
+<h2 id="frontend-state">Frontend-State</h2>
+<p>We need some model to represent a single todo item. The next steps are
+a bit of data plumbing and show you how easy it is to wire things up.
+Create a file <code>frontend/models/todo.ts</code> with the following content:</p>
+<pre><code class="lang-typescript"><span class="hljs-comment">// the reactive state management library of choice</span>
+<span class="hljs-keyword">import</span> { observable } from <span class="hljs-string">&apos;mobx&apos;</span>
+
+<span class="hljs-comment">// this is a single todo item</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> Todo {
+  <span class="hljs-comment">// id will never change after creation</span>
+  id: <span class="hljs-built_in">string</span>
+
+  <span class="hljs-comment">// checked will change on user interactions</span>
+  @observable checked: <span class="hljs-built_in">boolean</span> = <span class="hljs-literal">false</span>
+
+  <span class="hljs-comment">// text will never change after creation</span>
+  text: <span class="hljs-built_in">string</span>
+
+  <span class="hljs-comment">// create a new instance from a given text and create a uuid</span>
+  <span class="hljs-keyword">constructor</span> (text: string) {
+    <span class="hljs-keyword">this</span>.text = text
+    <span class="hljs-keyword">this</span>.id = <span class="hljs-string">&apos;xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx&apos;</span>.replace(<span class="hljs-regexp">/[xy]/g</span>, (c) =&gt; {
+      <span class="hljs-keyword">const</span> r = <span class="hljs-built_in">Math</span>.random()*<span class="hljs-number">16</span>|<span class="hljs-number">0</span>, v = c == <span class="hljs-string">&apos;x&apos;</span> ? r : (r&amp;<span class="hljs-number">0x3</span>|<span class="hljs-number">0x8</span>)
+      <span class="hljs-keyword">return</span> v.toString(<span class="hljs-number">16</span>)
+    })
+  }
+}
+</code></pre>
+<p>This is just a ordinary typescript class. An important note is the mobx-import
+on top: we will use a reactive state management library called
+<a href="https://mobx.js.org" target="_blank">MobX</a> for the frontend. Seagull ships with MobX already,
+so there is no need for installing it on your own. We also
+<a href="https://www.typescriptlang.org/docs/handbook/decorators.html" target="_blank">decorate</a> the
+<code>checked</code> property as <code>observable</code>, which means that whenever this property
+changes, some part of the UI might re-render. Because we want to reference
+individual todo items later on, we generate a uuid on creation.</p>
+<p>Now that we have an idea about how a todo item looks like, we need a store
+which manages a list of todo items. This store should also include just enough
+functionality to perform the basic operations needed: add a new todo, toggle
+specific todos as checked or unchecked, delete a specific todo. Create a file
+<code>frontend/stores/todos.ts</code>:</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { observable } from <span class="hljs-string">&apos;mobx&apos;</span>
+<span class="hljs-keyword">import</span> Todo from <span class="hljs-string">&apos;../models/todo&apos;</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> TodoStore {
+  @observable list: Todo[] = []
+
+  <span class="hljs-keyword">constructor</span>() {
+    <span class="hljs-keyword">this</span>.addTodo(<span class="hljs-string">&apos;wake up&apos;</span>)
+    <span class="hljs-keyword">this</span>.addTodo(<span class="hljs-string">&apos;go shopping&apos;</span>)
+    <span class="hljs-keyword">this</span>.addTodo(<span class="hljs-string">&apos;buy milk&apos;</span>)
+  }
+
+  addTodo (text: <span class="hljs-built_in">string</span>) {
+    <span class="hljs-keyword">this</span>.list.push(<span class="hljs-keyword">new</span> Todo(text))
+  }
+
+  deleteTodo (id: <span class="hljs-built_in">string</span>) {
+    <span class="hljs-keyword">const</span> index = <span class="hljs-keyword">this</span>.list.findIndex(todo =&gt; todo.id === id)
+    <span class="hljs-keyword">this</span>.list.splice(index, <span class="hljs-number">1</span>)
+  }
+
+  toggleTodo (id: <span class="hljs-built_in">string</span>) {
+    <span class="hljs-keyword">const</span> index = <span class="hljs-keyword">this</span>.list.findIndex(todo =&gt; todo.id === id)
+    <span class="hljs-keyword">this</span>.list[index].checked = !<span class="hljs-keyword">this</span>.list[index].checked
+  }
+}
+</code></pre>
+<p>For a bit more convenience, some todos are preloaded on creation. Note how this
+again is just an ordinary typescript class, with the small addition that the
+<code>list</code> property is decorated as <code>observable</code>.</p>
+<h2 id="frontend-routing">Frontend-Routing</h2>
+<p>Until now, these files are not used yet in the demo frontent, so let&apos;s change
+that. All the wiring happens in the <code>frontend/routes.tsx</code> file, which you
+should modify to look like this:</p>
+<pre><code class="lang-jsx"><span class="hljs-comment">// library imports</span>
+<span class="hljs-keyword">import</span> { history } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;@seagull-js/seagull&apos;</span>
+<span class="hljs-keyword">import</span> createElement <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-create-element&apos;</span>;
+<span class="hljs-keyword">import</span> { Provider } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-mobx&apos;</span>
+<span class="hljs-keyword">import</span> { Route, Router } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-router&apos;</span>;
+
+<span class="hljs-comment">// import of stores</span>
+<span class="hljs-keyword">import</span> Todos <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./stores/todos&apos;</span>
+
+<span class="hljs-comment">// import of individual pages</span>
+<span class="hljs-keyword">import</span> HelloPage <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;./pages/hello&apos;</span>
+
+<span class="hljs-comment">// routing structure</span>
+<span class="hljs-keyword">const</span> routes = (
+  <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Provider</span> <span class="hljs-attr">todos</span>=<span class="hljs-string">{</span> <span class="hljs-attr">new</span> <span class="hljs-attr">Todos</span>() }&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">Router</span> <span class="hljs-attr">history</span>=<span class="hljs-string">{</span> <span class="hljs-attr">history</span> }&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">Route</span> <span class="hljs-attr">path</span>=<span class="hljs-string">&apos;/&apos;</span> <span class="hljs-attr">component</span>=<span class="hljs-string">{</span> <span class="hljs-attr">HelloPage</span> }/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">Router</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">Provider</span>&gt;</span>
+)
+
+export default routes
+</span></code></pre>
+<p>Here we just imported our todos store and made it available to all routes and
+their components by wrapping all with a <code>Provider</code>. If you have more stores,
+just add more attributes to the one Provider.</p>
+<p>Now that the data and business logic is in-place, it is time to build the actual
+components!</p>
+<h2 id="frontend-components">Frontend-Components</h2>
+<p>We start with the individual todo item, which will be rendered
+within a table. Create a file <code>frontend/components/todo_item.tsx</code>with this
+content:</p>
+<pre><code class="lang-jsx"><span class="hljs-keyword">import</span> Component <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-component&apos;</span>;
+<span class="hljs-keyword">import</span> createElement <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-create-element&apos;</span>;
+<span class="hljs-keyword">import</span> { connect } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-mobx&apos;</span>
+<span class="hljs-keyword">import</span> Todo <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../models/todo&apos;</span>
+<span class="hljs-keyword">import</span> Todos <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../stores/todos&apos;</span>
+
+interface IProps {
+  todo: Todo,
+  todos: Todos
 }
 
-// internal &apos;state&apos; data structure of this component
-export interface IState {
-  list: ITodo[]
+@connect([<span class="hljs-string">&apos;todos&apos;</span>])
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TodoItem</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span>&lt;<span class="hljs-title">IProps</span>, </span>{}&gt; {
+  render() {
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">tr</span>&gt;</span>
+
+      {/* column 1: the checkbox for the &apos;checked&apos; state */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+          <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;checkbox&quot;</span>
+          <span class="hljs-attr">checked</span>=<span class="hljs-string">{</span> <span class="hljs-attr">this.props.todo.checked</span> }
+          <span class="hljs-attr">onClick</span>=<span class="hljs-string">{</span> <span class="hljs-attr">e</span> =&gt;</span> this.props.todos.toggleTodo(this.props.todo.id) }
+        /&gt;
+      <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+
+      {/* column 2: the actual text, either striked through or not */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>{ this.props.todo.checked ? (
+        <span class="hljs-tag">&lt;<span class="hljs-name">strike</span>&gt;</span>{ this.props.todo.text }<span class="hljs-tag">&lt;/<span class="hljs-name">strike</span>&gt;</span>
+      ) : (
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>{ this.props.todo.text }<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      )}<span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+
+      {/* column 3: a delete button for this todo item */}
+      <span class="hljs-tag">&lt;<span class="hljs-name">td</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">button</span>
+          <span class="hljs-attr">onClick</span>=<span class="hljs-string">{</span> <span class="hljs-attr">e</span> =&gt;</span> this.props.todos.deleteTodo(this.props.todo.id) }
+          className=&quot;btn btn-danger btn-xs&quot;
+        &gt;delete<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">td</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;/<span class="hljs-name">tr</span>&gt;</span>
+    )
+  }
+}
+</span></code></pre>
+<p>The <code>Component</code> class from which we&apos;re deriving here is generic over:</p>
+<ul>
+<li>the props we&apos;re passing into the component (here: IProps)</li>
+<li>the internal state the component will hold (here: {}, which means none)</li>
+</ul>
+<p>We will pass in a specific <code>Todo</code>, and the <code>connect</code> decorator will extend the
+props to include the exact store we just provided in the <code>routes.tsx</code> above.
+This is <em>the</em> central magic of the frontend with inferno. No need for complex
+Flux architectures or setting up massive amounts of boilerplate, there are just
+(reactive) stores, components, and some connection between them.</p>
+<p>Also note that since we defined our todos store explicitly within <code>IProps</code>, we
+get fully typesafe intellisense while writing this all.</p>
+<p>Now we&apos;re increasing the complexity a bit. We need a component which contains an
+text input field with a submit button, which triggers the <code>addTodo</code> method of
+our todos store. Create a file <code>frontend/components/input_form.tsx</code>:</p>
+<pre><code class="lang-jsx"><span class="hljs-comment">// external library imports</span>
+<span class="hljs-keyword">import</span> createElement <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-create-element&apos;</span>;
+<span class="hljs-keyword">import</span> Component <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-component&apos;</span>;
+<span class="hljs-keyword">import</span> { connect } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-mobx&apos;</span>
+<span class="hljs-keyword">import</span> Todos <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../stores/todos&apos;</span>
+
+<span class="hljs-comment">// external data that gets passed into this component</span>
+<span class="hljs-keyword">export</span> interface IProps {
+  todos: Todos
+}
+
+<span class="hljs-comment">// internal &apos;state&apos; data structure of this component</span>
+<span class="hljs-keyword">export</span> interface IState {
   input: string
 }
 
-// the (stateful) component for the page with type checking
-export default class TodosPage extends Component&lt;{}, IState&gt; {
-  constructor(props) {
-    super(props);
-    this.state = {
-      list: [],
-      input: &apos;&apos;
-    }
+<span class="hljs-comment">// the (stateful) component for the page with type checking</span>
+@connect([<span class="hljs-string">&apos;todos&apos;</span>])
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InputForm</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span>&lt;<span class="hljs-title">IProps</span>, <span class="hljs-title">IState</span>&gt; </span>{
+  <span class="hljs-keyword">constructor</span>(props) {
+    <span class="hljs-keyword">super</span>(props)
+    <span class="hljs-keyword">this</span>.state = { input: <span class="hljs-string">&apos;&apos;</span> }
   }
 
-  setInputText = (event) =&gt; this.setState({ input: event.target.value })
+  setInputText = (event) =&gt; <span class="hljs-keyword">this</span>.setState({ input: event.target.value })
 
-  addTodo = (event) =&gt; {
-    const newTodo = { checked: false, text: this.state.input }
-    this.setState({ input: &apos;&apos;, list: this.state.list.concat(newTodo) })
-  }
-
-  deleteTodo = (index: number) =&gt; {
-    const list = this.state.list
-    list.splice(index, 1)
-    this.setState({ list })
-  }
-
-  toggleChecked = (index: number) =&gt; {
-    const list = this.state.list
-    list[index].checked = !list[index].checked
-    this.setState({ list })
+  invoke = (_event) =&gt; {
+    <span class="hljs-keyword">this</span>.props.todos.addTodo(<span class="hljs-keyword">this</span>.state.input)
+    <span class="hljs-keyword">this</span>.setState({ input: <span class="hljs-string">&apos;&apos;</span> })
   }
 
   render() {
-    return (
+    <span class="hljs-keyword">return</span> (
+      <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;input-group&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span>
+          <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;form-control&quot;</span>
+          <span class="hljs-attr">value</span>=<span class="hljs-string">{</span> <span class="hljs-attr">this.state.input</span> }
+          <span class="hljs-attr">onChange</span>=<span class="hljs-string">{</span> <span class="hljs-attr">this.setInputText</span> }
+          <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;enter some todo text...&quot;</span>
+        /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">span</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;input-group-btn&quot;</span>&gt;</span>
+          <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">className</span>=<span class="hljs-string">&quot;btn btn-default&quot;</span> <span class="hljs-attr">onClick</span>=<span class="hljs-string">{</span> <span class="hljs-attr">this.invoke</span> }&gt;</span>add todo<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span>
+      <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    )
+  }
+}
+</span></code></pre>
+<p>We will keep the value of the input field in sync with the internal state of
+the component, and on button click trigger our store method and reset the input
+afterwards. The difference compared with the above component is just that we
+here use a bit of an internal state (statically typed as <code>IState</code>) for some
+component-local caching of a value until we really need it.</p>
+<p>Now there is only one last step to do: updating our <code>frontend/pages/hello.tsx</code>
+page to show us the new logic. Add the following code:</p>
+<pre><code class="lang-jsx"><span class="hljs-keyword">import</span> Component <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-component&apos;</span>;
+<span class="hljs-keyword">import</span> createElement <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-create-element&apos;</span>;
+<span class="hljs-keyword">import</span> { connect } <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;inferno-mobx&apos;</span>
+<span class="hljs-keyword">import</span> Todos <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../stores/todos&apos;</span>
+<span class="hljs-keyword">import</span> InputForm <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../components/input_form&apos;</span>
+<span class="hljs-keyword">import</span> TodoItem <span class="hljs-keyword">from</span> <span class="hljs-string">&apos;../components/todo_item&apos;</span>
+
+interface IProps {
+  todos: Todos
+}
+
+<span class="hljs-comment">// the (stateful) component for the page with type checking</span>
+@connect([<span class="hljs-string">&apos;todos&apos;</span>])
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HelloPage</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span>&lt;<span class="hljs-title">IProps</span>, </span>{}&gt; {
+
+  render() {
+    <span class="hljs-keyword">return</span> (
       &lt;div&gt;
-        &lt;table&gt;
+        &lt;table className=&quot;table table-bordered table-hover&quot;&gt;
+          &lt;thead&gt;
+            &lt;tr&gt;
+              &lt;td&gt;Status&lt;/td&gt;
+              &lt;td&gt;Text&lt;/td&gt;
+              &lt;td&gt;Actions&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
           &lt;tbody&gt;
-            {this.state.list.map((todo, index) =&gt;
-              &lt;tr&gt;
-                &lt;td&gt;&lt;input type=&quot;checkbox&quot; checked={ todo.checked } onClick={ e =&gt; this.toggleChecked(index) } /&gt;&lt;/td&gt;
-                &lt;td&gt;{ todo.checked ? (
-                  &lt;strike&gt;{ todo.text }&lt;/strike&gt;
-                ) : (
-                  &lt;span&gt;{ todo.text }&lt;/span&gt;
-                )}&lt;/td&gt;
-                &lt;td&gt;&lt;button onClick={ e =&gt; this.deleteTodo(index)}&gt;delete&lt;/button&gt;&lt;/td&gt;
-              &lt;/tr&gt;
+            {this.props.todos.list.map((todo, index) =&gt;
+              &lt;TodoItem todo={ todo } /&gt;
             )}
           &lt;/tbody&gt;
         &lt;/table&gt;
-
-        &lt;div&gt;
-          &lt;input type=&quot;text&quot; value={ this.state.input } onChange={ this.setInputText } placeholder=&quot;enter some text&quot; /&gt;
-          &lt;button onClick={ this.addTodo }&gt;add todo&lt;/button&gt;
-        &lt;/div&gt;
+        &lt;InputForm /&gt;
       &lt;/div&gt;
     )
   }
 }
 </code></pre>
+<p>And reload your browser. You should see a fully functional Todo-App in front
+of you! Congratulations, you just mastered the probably most difficult part
+of modern web development: building complex single page apps.</p>
+<h2 id="backend-ssr">Backend-SSR</h2>
+<p>As you might know, a SPA is rendered dynamically on the browser, which means
+that the browser must load some initial html file with a bunch of scripts,
+execute those scripts, optionally fetch data from an API and then renders the UI.
+Quite a few steps until a user can &quot;see&quot; something. And what about old school
+bots and scrapers, what do they see? the initial (empty) HTML? Does Google
+really execute Javascript while crawling (they do, a bit) and do they wait for
+data fetching before pagers can be rendered (currently: mostly not)?</p>
+<p>These are the actual weak points of a SPA: <em>initial load time</em> for users and
+<em>crawlability for bots</em>. The solution for these issues is called <a href="../../GLOSSARY.html#ssr" class="glossary-term" title="Server Side Rendering. Execute a Javascript frontend on the server like a
+browser would to and return the resulting HTML.">SSR</a>. Since
+Seagull builds upon node.js for all things backend, it can natively execute the
+todo frontend you just built above. Need a proof? Just click the <code>view source</code>
+button in your browser or run <code>curl http://localhost:3000/</code> in a terminal.
+There is fully rendered HTML, instantly!</p>
+<p>You didn&apos;t have to configure anything by yourself, the magic happens within the
+<code>api/Frontend.ts</code> api handler which got generated when you started the project
+with <code>seagull new ...</code>.</p>
+<h2 id="deployment">Deployment</h2>
+<p>todo</p>
 
                                 
                                 </section>
@@ -530,7 +773,7 @@ export default class TodosPage extends Component&lt;{}, IState&gt; {
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Quickstart","level":"2.1","depth":1,"next":{"title":"Introduction","level":"2.2","depth":1,"path":"chapters/general/index.md","ref":"chapters/general/index.md","articles":[{"title":"Featherweight","level":"2.2.1","depth":2,"path":"chapters/general/characteristics/featherweight.md","ref":"chapters/general/characteristics/featherweight.md","articles":[]},{"title":"Zero-Config","level":"2.2.2","depth":2,"path":"chapters/general/characteristics/zero-config.md","ref":"chapters/general/characteristics/zero-config.md","articles":[]},{"title":"Typesafe","level":"2.2.3","depth":2,"path":"chapters/general/characteristics/typesafe.md","ref":"chapters/general/characteristics/typesafe.md","articles":[]},{"title":"Isomorphic","level":"2.2.4","depth":2,"path":"chapters/general/characteristics/isomorphic.md","ref":"chapters/general/characteristics/isomorphic.md","articles":[]},{"title":"Cloud","level":"2.2.5","depth":2,"path":"chapters/general/characteristics/cloud.md","ref":"chapters/general/characteristics/cloud.md","articles":[]},{"title":"Framework","level":"2.2.6","depth":2,"path":"chapters/general/characteristics/framework.md","ref":"chapters/general/characteristics/framework.md","articles":[]}]},"previous":{"title":"The Seagull Framework","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/general/quickstart.md","mtime":"2017-09-11T07:06:38.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-11T07:07:09.074Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Quickstart","level":"2.1","depth":1,"next":{"title":"Introduction","level":"2.2","depth":1,"path":"chapters/general/index.md","ref":"chapters/general/index.md","articles":[{"title":"Featherweight","level":"2.2.1","depth":2,"path":"chapters/general/characteristics/featherweight.md","ref":"chapters/general/characteristics/featherweight.md","articles":[]},{"title":"Zero-Config","level":"2.2.2","depth":2,"path":"chapters/general/characteristics/zero-config.md","ref":"chapters/general/characteristics/zero-config.md","articles":[]},{"title":"Typesafe","level":"2.2.3","depth":2,"path":"chapters/general/characteristics/typesafe.md","ref":"chapters/general/characteristics/typesafe.md","articles":[]},{"title":"Isomorphic","level":"2.2.4","depth":2,"path":"chapters/general/characteristics/isomorphic.md","ref":"chapters/general/characteristics/isomorphic.md","articles":[]},{"title":"Cloud","level":"2.2.5","depth":2,"path":"chapters/general/characteristics/cloud.md","ref":"chapters/general/characteristics/cloud.md","articles":[]},{"title":"Framework","level":"2.2.6","depth":2,"path":"chapters/general/characteristics/framework.md","ref":"chapters/general/characteristics/framework.md","articles":[]}]},"previous":{"title":"The Seagull Framework","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["collapsible-chapters"],"pluginsConfig":{"collapsible-chapters":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"chapters/general/quickstart.md","mtime":"2017-09-12T12:09:28.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-12T12:12:43.653Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
